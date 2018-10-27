@@ -109,6 +109,8 @@ private:
     static bool _stopping;
 
     // >>>>> node params
+    int  _frame_rate; 				///Get the framerate
+
     bool _publish_tf;           ///< Publish TF if true
     bool _enable_rgb;           ///< Publish RGB stream if true
     bool _enable_auto_wb;       ///< Enable RGB automatic white balance

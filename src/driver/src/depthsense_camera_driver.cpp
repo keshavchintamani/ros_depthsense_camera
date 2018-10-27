@@ -187,6 +187,7 @@ void DepthSenseDriver::release()
 #define PAR_ENABLE_DENOISE          "ds_camera/enable_denoise"
 #define PAR_CONF_THRESH             "ds_camera/confidence_thresh"
 #define PAR_POW_LINE_FREQ           "ds_camera/power_line_freq"
+#define PAR_FRAME_RATE              "ds_camera/frame_rate"
 
 void DepthSenseDriver::loadParams()
 {
@@ -289,7 +290,19 @@ void DepthSenseDriver::loadParams()
         _power_line_freq = 50;
         _nh.setParam( PAR_POW_LINE_FREQ, _power_line_freq );
     }
+
+    if( _nh.hasParam( PAR_FRAME_RATE ) )
+    {
+           _nh.getParam( PAR_FRAME_RATE, _frame_rate );
+    }
+    else
+    {
+           _frame_rate = 60; //Default is 60
+           _nh.setParam( PAR_FRAME_RATE, _frame_rate );
+    }
 }
+
+
 
 void DepthSenseDriver::run()
 {
@@ -443,8 +456,7 @@ bool DepthSenseDriver::addDepthNode(DepthSense::Device device, DepthSense::Node 
         // >>>>> Parameters
         depthNode.setConfidenceThreshold( _conf_thresh );
         depthNode.setEnableDenoising( _enable_denoise );
-        configuration.framerate = 60; // TODO create param
-        // <<<<< Parameters
+        configuration.framerate = _frame_rate;
 
         try
         {
